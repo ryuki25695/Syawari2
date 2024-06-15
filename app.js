@@ -44,6 +44,10 @@ function logout() {
     window.location.href = "index.html";  // ログインページにリダイレクト
 }
 
+function goBack() {
+    window.location.href = "index.html";  // ログインページにリダイレクト
+}
+
 function createGroup(event) {
     event.preventDefault();
     let groupName = document.getElementById("groupName").value;
