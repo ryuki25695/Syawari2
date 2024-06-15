@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>車割アプリ - ユーザーページ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ようこそ、<span id="userDisplayName"></span>さん</h1>
+        <button onclick="logout()">ログアウト</button>
+        
+        <h2>グループ管理</h2>
+        <ul id="groupList"></ul>
+        
+        <h2>グループ作成</h2>
+        <form onsubmit="createGroup(event)">
+            <label for="groupName">グループ名:</label>
+            <input type="text" id="groupName" required><br>
+            <label for="groupPasswordCreate">パスワード:</label>
+            <input type="password" id="groupPasswordCreate" required><br>
+            <button type="submit">グループ作成</button>
+        </form>
+        
+        <h2>グループに参加</h2>
+        <form onsubmit="joinGroup(event)">
+            <label for="groupNameJoin">グループ名:</label>
+            <input type="text" id="groupNameJoin" required><br>
+            <label for="groupPasswordJoin">パスワード:</label>
+            <input type="password" id="groupPasswordJoin" required><br>
+            <button type="submit">グループ参加</button>
+        </form>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

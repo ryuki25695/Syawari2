@@ -33,7 +33,7 @@ function login(event) {
     let users = JSON.parse(localStorage.getItem('users')) || {};
     if (users[username] && users[username] === password) {
         localStorage.setItem('currentUser', username);
-        displayUserPage();
+        window.location.href = "user.html";  // ユーザーページにリダイレクト
     } else {
         alert("ユーザー名またはパスワードが正しくありません。");
     }
@@ -41,22 +41,7 @@ function login(event) {
 
 function logout() {
     localStorage.removeItem('currentUser');
-    displayLoginPage();
-}
-
-function displayLoginPage() {
-    document.getElementById("loginPage").classList.remove("hidden");
-    document.getElementById("userPage").classList.add("hidden");
-}
-
-function displayUserPage() {
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("userPage").classList.remove("hidden");
-
-    let currentUser = localStorage.getItem('currentUser');
-    document.getElementById("userDisplayName").textContent = currentUser;
-
-    updateGroupList();
+    window.location.href = "index.html";  // ログインページにリダイレクト
 }
 
 function createGroup(event) {
@@ -88,7 +73,7 @@ function joinGroup(event) {
         alert(`グループ ${groupName} に参加しました。`);
         updateGroupList();
     } else {
-        alert("グループ名、またはパスワードが正しくありません。");
+        alert("グループ名またはパスワードが正しくありません。");
     }
 }
 
@@ -108,9 +93,12 @@ function updateGroupList() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('currentUser')) {
-        displayUserPage();
-    } else {
-        displayLoginPage();
+    if (window.location.pathname.endsWith("user.html")) {
+        if (localStorage.getItem('currentUser')) {
+            document.getElementById("userDisplayName").textContent = localStorage.getItem('currentUser');
+            updateGroupList();
+        } else {
+            window.location.href = "index.html";  // ログインしていない場合はログインページにリダイレクト
+        }
     }
 });
