@@ -22,7 +22,10 @@ function register(event) {
     users[newUsername] = newPassword;
     localStorage.setItem('users', JSON.stringify(users));
     alert("登録が完了しました。");
-    showLogin();
+
+    // 登録後にログインしてリダイレクト
+    localStorage.setItem('currentUser', newUsername);
+    window.location.href = "user.html";
 }
 
 function login(event) {
