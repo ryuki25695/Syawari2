@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>車割アプリ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="page1">
+        <h1>車割アプリ</h1>
+        <div id="loginForm">
+            <h2>ログイン</h2>
+            <form onsubmit="login(event)">
+                <label for="username">ユーザー名:</label>
+                <input type="text" id="username" required><br>
+                <label for="password">パスワード:</label>
+                <input type="password" id="password" required>
+                <button type="submit">ログイン</button>
+            </form>
+            <button onclick="showRegister()">新規登録</button>
+        </div>
+
+        <div id="registerForm" class="hidden">
+            <h2>新規登録</h2>
+            <form onsubmit="register(event)">
+                <label for="newUsername">ユーザー名:</label>
+                <input type="text" id="newUsername" required><br>
+                <label for="newPassword">パスワード:</label>
+                <input type="password" id="newPassword" required>
+                <button type="submit">登録</button>
+            </form>
+            <button onclick="showLogin()">戻る</button>
+        </div>
+    </div>
+
+    <div id="page2" class="hidden">
+        <h1>ようこそ、<span id="userDisplayName"></span>さん</h1>
+        <button onclick="logout()">ログアウト</button>
+        
+        <h2>グループ管理</h2>
+        <div id="groupList"></div>
+        
+        <h2>グループ作成</h2>
+        <form onsubmit="createGroup(event)">
+            <label for="groupName">グループ名:</label>
+            <input type="text" id="groupName" required><br>
+            <label for="groupPasswordCreate">パスワード:</label>
+            <input type="password" id="groupPasswordCreate" required>
+            <button type="submit">グループ作成</button>
+        </form>
+        
+        <h2>グループに参加</h2>
+        <form onsubmit="joinGroup(event)">
+            <label for="groupNameJoin">グループ名:</label>
+            <input type="text" id="groupNameJoin" required><br>
+            <label for="groupPasswordJoin">パスワード:</label>
+            <input type="password" id="groupPasswordJoin" required>
+            <button type="submit">グループ参加</button>
+        </form>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
