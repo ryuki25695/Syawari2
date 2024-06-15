@@ -88,7 +88,7 @@ function joinGroup(event) {
         alert(`グループ ${groupName} に参加しました。`);
         updateGroupList();
     } else {
-        alert("グループ名またはパスワードが正しくありません。");
+        alert("グループ名、またはパスワードが正しくありません。");
     }
 }
 
