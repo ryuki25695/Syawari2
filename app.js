@@ -33,7 +33,7 @@ function login(event) {
     let users = JSON.parse(localStorage.getItem('users')) || {};
     if (users[username] && users[username] === password) {
         localStorage.setItem('currentUser', username);
-        displayPage2();
+        displayUserPage();
     } else {
         alert("ユーザー名またはパスワードが正しくありません。");
     }
@@ -41,17 +41,17 @@ function login(event) {
 
 function logout() {
     localStorage.removeItem('currentUser');
-    displayPage1();
+    displayLoginPage();
 }
 
-function displayPage1() {
-    document.getElementById("page1").classList.remove("hidden");
-    document.getElementById("page2").classList.add("hidden");
+function displayLoginPage() {
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("userPage").classList.add("hidden");
 }
 
-function displayPage2() {
-    document.getElementById("page1").classList.add("hidden");
-    document.getElementById("page2").classList.remove("hidden");
+function displayUserPage() {
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("userPage").classList.remove("hidden");
 
     let currentUser = localStorage.getItem('currentUser');
     document.getElementById("userDisplayName").textContent = currentUser;
@@ -109,8 +109,8 @@ function updateGroupList() {
 
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('currentUser')) {
-        displayPage2();
+        displayUserPage();
     } else {
-        displayPage1();
+        displayLoginPage();
     }
 });
