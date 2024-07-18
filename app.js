@@ -5,32 +5,50 @@ const PORT = process.env.PORT || 3000;
 
 const apiKey = 'AIzaSyBjniU6kTFkWNyA50AOMuVSPF6IvW3hSnU';
 
-// Geocoding APIを使って住所から緯度経度を取得するエンドポイント
-app.get('/geocode', async (req, res) => {
-  const address = req.query.address;
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+app.get('/optimize', async (req, res) => {
+  const pickups = req.query.pickups.split('|');
+  const drivers = req.query.drivers.split('|');
   
+  // ドライバーとピックアップ地点の距離行列を計算
+  const origins = drivers.join('|');
+  const destinations = pickups.join('|');
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${encodeURIComponent(origins)}&destinations=${encodeURIComponent(destinations)}&key=${apiKey}`;
+
   try {
     const response = await axios.get(url);
-    res.json(response.data);
+    const distanceMatrix = response.data.rows;
+
+    // 距離マトリックスを基に最適なマッチングを計算するロジック
+    const assignments = matchPickupsToDrivers(distanceMatrix);
+
+    res.json(assignments);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Distance Matrix APIを使って距離や所要時間を計算するエンドポイント
-app.get('/distance', async (req, res) => {
-  const origins = req.query.origins;
-  const destinations = req.query.destinations;
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${encodeURIComponent(origins)}&destinations=${encodeURIComponent(destinations)}&key=${apiKey}`;
-  
-  try {
-    const response = await axios.get(url);
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+function matchPickupsToDrivers(distanceMatrix) {
+  const assignments = [];
+  const drivers = distanceMatrix.map((row, index) => ({
+    index: index,
+    distances: row.elements,
+  }));
+
+  // 各ドライバーにピックアップ地点を割り当てる
+  drivers.forEach(driver => {
+    driver.distances.forEach((distance, pickupIndex) => {
+      if (!assignments[pickupIndex] || assignments[pickupIndex].distance.value > distance.distance.value) {
+        assignments[pickupIndex] = {
+          driver: driver.index,
+          distance: distance.distance,
+          duration: distance.duration,
+        };
+      }
+    });
+  });
+
+  return assignments;
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
